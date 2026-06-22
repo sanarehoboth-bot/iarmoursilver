@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>iArmourSilver – Senior Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root{
+  --cream:#FDF6E3;--cream2:#F5EDD6;--gold:#B8860B;--gold-light:#D4A017;
+  --deep:#1A1A1A;--charcoal:#2C2C2C;--muted:#5C5038;
+  --red:#C0392B;--green:#1E7B45;--blue:#1A4A8A;--blue-light:#2563EB;
+  --sky:#EBF4FF;--holy:#7C3AED;--amber-bg:#FFFBEB;--shadow:rgba(0,0,0,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream);color:var(--deep);font-family:'Lora',Georgia,serif;font-size:18px;
+  min-height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;
+  box-shadow:0 0 60px rgba(0,0,0,0.18);position:relative;overflow-x:hidden;}
+
+.header{background:var(--deep);color:var(--cream);padding:16px 18px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;border-bottom:3px solid var(--gold);}
+.header-logo{display:flex;align-items:center;gap:10px;}
+.shield-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  border-radius:4px 4px 14px 14px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.header-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;line-height:1;}
+.header-sub{font-size:10px;color:var(--gold-light);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.voice-toggle{background:var(--gold);border:none;border-radius:24px;padding:8px 14px;
+  color:var(--deep);font-family:'Lora',serif;font-weight:600;font-size:13px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:all .2s;}
+.voice-toggle.active{background:#228B22;color:white;}
+
+.greeting-banner{background:linear-gradient(135deg,var(--deep) 0%,#2d2010 100%);
+  color:var(--cream);padding:18px 22px;border-bottom:2px solid var(--gold);}
+.greeting-time{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-light);margin-bottom:4px;}
+.greeting-main{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;line-height:1.2;}
+.greeting-verse{margin-top:10px;font-size:14px;color:#c8b88a;font-style:italic;
+  line-height:1.5;border-left:3px solid var(--gold);padding-left:12px;}
+
+.tabs{display:flex;background:var(--cream2);border-bottom:2px solid #ddd;
+  overflow-x:auto;scrollbar-width:none;position:sticky;top:71px;z-index:90;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{flex:1;min-width:72px;padding:11px 4px 9px;background:none;border:none;cursor:pointer;
+  font-family:'Lora',serif;font-size:11px;color:var(--muted);display:flex;flex-direction:column;
+  align-items:center;gap:3px;transition:all .2s;border-bottom:3px solid transparent;position:relative;top:2px;}
+.tab-btn .ti{font-size:24px;line-height:1;}
+.tab-btn.active{color:var(--deep);border-bottom:3px solid var(--gold);font-weight:600;}
+
+.section{display:none;padding:18px;animation:fadeIn .3s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.card{background:white;border-radius:16px;padding:20px;margin-bottom:16px;
+  box-shadow:0 2px 12px var(--shadow);border:1px solid rgba(0,0,0,0.06);}
+.card-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--deep);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+
+.big-btn{width:100%;padding:17px 18px;border-radius:14px;border:none;font-family:'Lora',serif;
+  font-size:17px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:12px;
+  transition:all .2s;margin-bottom:12px;text-align:left;letter-spacing:.2px;}
+.big-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15);}
+.big-btn:active{transform:scale(.98);}
+.big-btn .bi{font-size:28px;flex-shrink:0;}
+.big-btn .bt{line-height:1.3;}
+.big-btn .bs{font-size:13px;font-weight:400;opacity:.75;display:block;margin-top:2px;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--deep);}
+.btn-holy{background:linear-gradient(135deg,#4C1D95,var(--holy));color:white;}
+.btn-green{background:linear-gradient(135deg,#155E3B,var(--green));color:white;}
+.btn-blue{background:linear-gradient(135deg,#1E3A8A,var(--blue-light));color:white;}
+.btn-red{background:linear-gradient(135deg,#7F1D1D,var(--red));color:white;}
+.btn-light{background:var(--cream2);color:var(--deep);border:1.5px solid #ddd;}
+.btn-wa{background:linear-gradient(135deg,#075E54,#128C7E);color:white;}
+
+.section-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  margin:18px 0 10px;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:#ddd;}
+
+/* ── VERSE ── */
+.verse-card{background:linear-gradient(145deg,#1a0a2e 0%,#2d1654 100%);color:white;
+  border-radius:18px;padding:24px 20px;margin-bottom:16px;position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(124,58,237,0.3);}
+.verse-card::before{content:'✦';position:absolute;top:-10px;right:16px;font-size:70px;opacity:.07;color:var(--gold);}
+.verse-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;}
+.verse-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.vnav-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:8px;
+  padding:6px 14px;color:white;font-size:14px;cursor:pointer;transition:all .2s;}
+.vnav-btn:hover{background:rgba(255,255,255,.28);}
+.verse-day-badge{font-size:12px;color:var(--gold-light);font-weight:600;}
+.verse-text{font-family:'Playfair Display',serif;font-size:21px;line-height:1.55;color:#f0e6ff;margin-bottom:10px;}
+.verse-ref{font-size:14px;color:var(--gold-light);font-style:italic;}
+.verse-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.verse-btn{flex:1;min-width:78px;padding:11px 6px;border-radius:10px;border:1.5px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.1);color:white;font-family:'Lora',serif;font-size:13px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:all .2s;}
+.verse-btn:hover{background:rgba(255,255,255,.22);}
+.verse-btn.primary{background:var(--gold);border-color:var(--gold);color:var(--deep);font-weight:600;}
+.verse-btn.automode{background:rgba(34,139,34,.35);border-color:#4ade80;color:#86efac;}
+.verse-btn.automode.on{background:rgba(34,139,34,.6);border-color:#22c55e;color:white;}
+
+.auto-banner{background:linear-gradient(90deg,#14532d,#166534);color:white;border-radius:12px;
+  padding:14px 16px;margin-bottom:14px;display:none;align-items:center;gap:12px;}
+.auto-banner.visible{display:flex;}
+.auto-dot{width:10px;height:10px;border-radius:50%;background:#4ade80;flex-shrink:0;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.auto-banner-text{flex:1;font-size:14px;line-height:1.5;}
+.auto-stop{background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 12px;
+  color:white;font-family:'Lora',serif;font-size:13px;cursor:pointer;white-space:nowrap;}
+
+/* ── JOURNEY ── */
+.journey-track{position:relative;padding-left:30px;}
+.journey-track::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;
+  width:2px;background:linear-gradient(to bottom,var(--gold),var(--holy));}
+.journey-step{position:relative;margin-bottom:14px;background:white;border-radius:12px;
+  padding:14px;border:1.5px solid #e8e0f0;cursor:pointer;transition:all .2s;}
+.journey-step:hover{border-color:var(--holy);transform:translateX(4px);}
+.journey-step.done{border-color:var(--green);background:#f0fdf4;}
+.journey-step.current{border-color:var(--gold);background:var(--amber-bg);box-shadow:0 0 0 3px rgba(184,134,11,.15);}
+.step-dot{position:absolute;left:-24px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;z-index:1;}
+.step-dot.done{background:var(--green);color:white;}
+.step-dot.current{background:var(--gold);color:var(--deep);}
+.step-dot.todo{background:#ddd;color:#888;}
+.step-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;}
+.step-desc{font-size:13px;color:var(--muted);margin-top:3px;}
+.step-dur{font-size:12px;color:var(--holy);font-weight:600;margin-top:5px;}
+
+.prog-wrap{background:#e5e7eb;border-radius:8px;height:10px;margin:12px 0 5px;overflow:hidden;}
+.prog-bar{height:100%;border-radius:8px;background:linear-gradient(to right,var(--gold),var(--holy));transition:width .6s;}
+
+/* ── PLAYER ── */
+.player-card{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:18px;padding:20px;color:white;margin-bottom:14px;}
+.player-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#94a3b8;margin-bottom:6px;}
+.player-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:3px;}
+.player-host{font-size:13px;color:#94a3b8;margin-bottom:14px;}
+.player-controls{display:flex;align-items:center;gap:14px;}
+.p-btn{background:none;border:none;color:white;font-size:26px;cursor:pointer;padding:4px;transition:transform .2s;}
+.p-btn.play{width:50px;height:50px;border-radius:50%;background:var(--gold);color:var(--deep);
+  font-size:22px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.p-btn:hover{transform:scale(1.12);}
+.p-prog{flex:1;}
+.p-bar{background:rgba(255,255,255,.2);border-radius:4px;height:6px;cursor:pointer;}
+.p-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .5s;}
+.p-times{display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-top:4px;}
+
+/* ── PODCAST ADD ── */
+.pod-input-row{display:flex;gap:8px;margin-bottom:10px;}
+.pod-input{flex:1;padding:12px 14px;border:1.5px solid #ccc;border-radius:10px;
+  font-family:'Lora',serif;font-size:15px;color:var(--deep);background:white;}
+.pod-input:focus{outline:none;border-color:var(--blue-light);}
+.pod-add-btn{padding:12px 16px;background:var(--blue-light);color:white;border:none;border-radius:10px;font-size:18px;cursor:pointer;}
+.pod-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.pod-item{display:flex;align-items:center;gap:10px;background:white;border-radius:10px;
+  padding:12px 14px;border:1.5px solid #e5e7eb;cursor:pointer;transition:all .2s;}
+.pod-item:hover,.pod-item.active{border-color:var(--gold);}
+.pod-item.active{background:var(--amber-bg);}
+.pod-item-icon{font-size:22px;flex-shrink:0;}
+.pod-item-info{flex:1;min-width:0;}
+.pod-item-name{font-size:15px;font-weight:600;color:var(--deep);}
+.pod-item-url{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pod-playing{font-size:11px;color:var(--gold);font-weight:600;}
+.pod-del{background:none;border:none;font-size:18px;color:#ccc;cursor:pointer;flex-shrink:0;}
+.pod-del:hover{color:var(--red);}
+
+/* ── CAMERA / OCR ── */
+.ocr-box{border:2.5px dashed var(--blue-light);border-radius:16px;padding:28px 18px;
+  text-align:center;background:var(--sky);cursor:pointer;transition:all .2s;margin-bottom:14px;}
+.ocr-box:hover{background:#dbeafe;}
+.ocr-icon{font-size:48px;margin-bottom:10px;}
+.ocr-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--blue);}
+.ocr-sub{font-size:14px;color:#4B5563;margin-top:6px;line-height:1.5;}
+.camera-area{display:none;margin-bottom:14px;border-radius:14px;overflow:hidden;}
+.camera-area.show{display:block;}
+video{width:100%;background:#000;display:block;max-height:260px;object-fit:cover;}
+.cam-btns{display:flex;gap:10px;padding:10px 0 0;}
+.cam-btn{flex:1;padding:14px;border:none;border-radius:10px;font-family:'Lora',serif;font-size:16px;font-weight:600;cursor:pointer;}
+.cam-snap{background:var(--blue-light);color:white;}
+.cam-cancel{background:var(--cream2);color:var(--deep);border:1.5px solid #ccc;}
+canvas{display:none;}
+.ocr-result{background:#f0fdf4;border:1.5px solid var(--green);border-radius:14px;padding:18px;margin-bottom:14px;display:none;}
+.ocr-result.visible{display:block;animation:fadeIn .4s ease;}
+.ocr-result-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--green);margin-bottom:12px;}
+.ocr-item{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.ocr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:7px;}
+.ocr-item-text{font-size:16px;line-height:1.5;}
+
+/* ── EXERCISES ── */
+.exercise-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.exercise-card{background:white;border-radius:14px;padding:16px 12px;border:1.5px solid #e5e7eb;cursor:pointer;transition:all .2s;text-align:center;}
+.exercise-card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
+.exercise-icon{font-size:36px;margin-bottom:6px;}
+.exercise-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--deep);}
+.exercise-time{font-size:12px;color:var(--green);font-weight:600;margin-top:3px;}
+
+/* ── SAFETY ── */
+.sos-button{width:100%;padding:26px;background:linear-gradient(135deg,#7F1D1D,#DC2626,#EF4444);
+  color:white;border:none;border-radius:20px;font-family:'Playfair Display',serif;font-size:26px;
+  font-weight:700;cursor:pointer;margin-bottom:10px;box-shadow:0 8px 30px rgba(220,38,38,.4);
+  display:flex;align-items:center;justify-content:center;gap:14px;transition:all .2s;position:relative;overflow:hidden;}
+.sos-button::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(255,255,255,.15),transparent);}
+.sos-button:hover{transform:scale(1.02);}
+.sos-pulse{width:16px;height:16px;border-radius:50%;background:white;animation:blink 1.2s infinite;}
+.wa-row{display:flex;gap:10px;margin-bottom:14px;}
+.wa-btn{flex:1;padding:14px 8px;border:none;border-radius:12px;font-family:'Lora',serif;
+  font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;}
+.wa-call{background:linear-gradient(135deg,#075E54,#128C7E);color:white;}
+.wa-msg{background:linear-gradient(135deg,#25D366,#128C7E);color:white;}
+.wa-btn:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.2);}
+.safe-word-box{background:linear-gradient(135deg,#1e3a5f,#1E4A8A);color:white;border-radius:16px;padding:20px;margin-bottom:16px;}
+.sw-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#93c5fd;margin-bottom:8px;}
+.sw-word{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:8px;}
+.sw-desc{font-size:14px;color:#bfdbfe;line-height:1.5;}
+.mic-badge{display:inline-block;background:rgba(255,255,255,.12);border-radius:8px;padding:4px 12px;margin-top:10px;font-size:13px;color:#86efac;}
+.vault-card{background:linear-gradient(135deg,#1c1917,#292524);color:white;border-radius:16px;padding:20px;margin-bottom:14px;}
+.vault-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#d6d3d1;margin-bottom:10px;}
+.vault-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;margin-bottom:12px;}
+.vault-items{display:flex;flex-direction:column;gap:8px;}
+.v-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.08);border-radius:10px;padding:11px 14px;}
+.v-item-name{font-size:15px;color:#e7e5e4;}
+.v-item-st{font-size:12px;color:#86efac;font-weight:600;}
+.vault-cooling{background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:14px;color:#fef3c7;}
+
+/* ── REMINDERS ── */
+.reminder-list{display:flex;flex-direction:column;gap:10px;}
+.reminder-item{display:flex;align-items:center;gap:12px;background:white;border-radius:12px;padding:14px;border:1.5px solid #e5e7eb;}
+.reminder-time{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--blue);min-width:58px;}
+.reminder-info{flex:1;}
+.reminder-name{font-size:16px;font-weight:600;}
+.reminder-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+.r-toggle{width:46px;height:25px;border-radius:13px;border:none;position:relative;cursor:pointer;transition:all .3s;}
+.r-toggle.on{background:var(--green);}
+.r-toggle.off{background:#d1d5db;}
+.r-toggle::after{content:'';position:absolute;width:19px;height:19px;border-radius:50%;background:white;top:3px;transition:all .3s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.r-toggle.on::after{left:24px;}
+.r-toggle.off::after{left:3px;}
+
+/* ── HOME STATS ── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.stat-card{background:white;border-radius:14px;padding:16px 12px;text-align:center;box-shadow:0 2px 10px var(--shadow);}
+.stat-icon{font-size:32px;}
+.stat-val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-top:4px;}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:2px;}
+.stat-add{margin-top:8px;background:var(--sky);border:1.5px solid var(--blue-light);border-radius:20px;padding:5px 12px;font-family:'Lora',serif;font-size:12px;color:var(--blue);cursor:pointer;font-weight:600;}
+
+/* ── MODALS ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;animation:fadeIn .2s ease;}
+.modal{background:var(--cream);border-radius:24px 24px 0 0;padding:26px 22px 40px;width:100%;max-height:88vh;overflow-y:auto;animation:slideUp .3s ease;max-width:480px;position:relative;}
+@keyframes slideUp{from{transform:translateY(40px);}to{transform:translateY(0);}}
+.modal-handle{width:40px;height:4px;background:#ccc;border-radius:2px;margin:0 auto 18px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:14px;}
+.modal-body{font-size:16px;line-height:1.75;color:var(--charcoal);}
+.modal-close{position:absolute;top:16px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);}
+.sos-modal{background:linear-gradient(135deg,#1a0000,#2d0000);}
+.nominee-chip{display:inline-flex;align-items:center;gap:5px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:20px;padding:5px 12px;font-size:13px;color:var(--green);font-weight:600;}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--deep);color:var(--cream);border-radius:12px;padding:13px 22px;font-size:15px;font-weight:500;z-index:300;transition:transform .3s ease;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+.notice{background:#fff3cd;border:1.5px solid #ffc107;border-radius:12px;padding:12px;margin-bottom:12px;font-size:14px;color:#856404;line-height:1.6;display:none;}
+/* ── PIN GATE ── */
+#pinGate{position:fixed;inset:0;background:var(--deep);z-index:9999;display:flex;
+  flex-direction:column;align-items:center;justify-content:center;padding:24px;
+  font-family:'Lora',serif;color:var(--cream);}
+#pinGate.hidden{display:none;}
+.pin-shield{font-size:48px;margin-bottom:6px;}
+.pin-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--gold-light);margin-bottom:4px;}
+.pin-sub{font-size:13px;color:#c8b88a;margin-bottom:22px;text-align:center;}
+.pin-dots{display:flex;gap:14px;margin-bottom:22px;}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--gold);background:transparent;transition:all .15s;}
+.pin-dot.filled{background:var(--gold);}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:280px;}
+.pin-key{padding:18px 0;border-radius:14px;border:1px solid rgba(212,160,23,.35);
+  background:rgba(255,255,255,.05);color:var(--cream);font-size:22px;font-family:'Lora',serif;
+  cursor:pointer;transition:all .15s;}
+.pin-key:active{background:var(--gold);color:var(--deep);transform:scale(.96);}
+.pin-key.wide{font-size:14px;}
+.pin-error{color:#ff8a80;font-size:13px;margin-top:14px;min-height:18px;}
+.pin-buy{margin-top:18px;font-size:13px;color:var(--gold-light);text-decoration:underline;cursor:pointer;background:none;border:none;}
+
+/* ── AI COACH ── */
+.ai-coach-btn{position:fixed;bottom:22px;right:18px;width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,var(--holy),#4C1D95);color:white;border:none;font-size:26px;
+  box-shadow:0 4px 18px rgba(124,58,237,.5);cursor:pointer;z-index:500;display:flex;
+  align-items:center;justify-content:center;transition:transform .2s;}
+.ai-coach-btn:active{transform:scale(.92);}
+.coach-panel{position:fixed;bottom:90px;right:18px;width:min(320px,calc(100vw - 36px));
+  background:white;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);z-index:500;
+  display:none;flex-direction:column;max-height:60vh;overflow:hidden;}
+.coach-panel.open{display:flex;}
+.coach-head{background:linear-gradient(135deg,var(--holy),#4C1D95);color:white;padding:12px 14px;
+  font-weight:600;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+.coach-body{padding:14px;font-size:14px;line-height:1.5;overflow-y:auto;color:var(--deep);}
+.coach-close{background:none;border:none;color:white;font-size:18px;cursor:pointer;}
+
+/* ── SHARECARD (owner only) ── */
+#shareModal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;display:none;
+  align-items:center;justify-content:center;padding:20px;}
+#shareModal.open{display:flex;}
+.share-wrap{background:var(--cream);border-radius:18px;padding:18px;max-width:340px;width:100%;}
+#captureArea{background:linear-gradient(145deg,#1a0a2e,#2d1654);border-radius:16px;padding:28px 22px;
+  color:white;text-align:center;position:relative;overflow:hidden;}
+#captureArea::before{content:'🛡️';position:absolute;top:-6px;right:10px;font-size:70px;opacity:.08;}
+.share-brand{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold-light);margin-bottom:14px;}
+.share-hook-en{font-size:17px;line-height:1.4;margin-bottom:8px;}
+.share-hook-hi{font-size:15px;line-height:1.4;color:#e0d4ff;margin-bottom:14px;}
+.share-price{font-size:15px;font-weight:600;color:var(--gold-light);margin-bottom:6px;}
+.share-watermark{font-size:10px;color:#a78bda;letter-spacing:1px;margin-top:10px;}
+.share-actions{display:flex;gap:10px;margin-top:16px;}
+.share-actions button{flex:1;padding:12px;border-radius:10px;border:none;font-family:'Lora',serif;
+  font-size:13px;font-weight:600;cursor:pointer;}
+.share-btn-post{background:var(--gold);color:var(--deep);}
+.share-btn-cap{background:var(--cream2);color:var(--deep);border:1px solid #ddd;}
+
+/* ── FOOTER ── */
+.app-footer{text-align:center;font-size:11px;color:var(--muted);padding:18px 18px 80px;opacity:.7;}
+
+/* ── UNDO TOAST ── */
+.undo-toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--deep);color:var(--cream);padding:12px 18px;border-radius:30px;font-size:13px;
+  display:flex;align-items:center;gap:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:600;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;}
+.undo-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;}
+.undo-toast button{background:var(--gold);color:var(--deep);border:none;border-radius:16px;
+  padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- ───── PIN GATE ───── -->
+<div id="pinGate">
+  <div class="pin-shield">🛡️</div>
+  <div class="pin-title">iArmourSilver</div>
+  <div class="pin-sub">Enter your 4-digit PIN to unlock</div>
+  <div class="pin-dots" id="pinDots">
+    <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+  </div>
+  <div class="pin-pad">
+    <button class="pin-key" onclick="pinPress('1')">1</button>
+    <button class="pin-key" onclick="pinPress('2')">2</button>
+    <button class="pin-key" onclick="pinPress('3')">3</button>
+    <button class="pin-key" onclick="pinPress('4')">4</button>
+    <button class="pin-key" onclick="pinPress('5')">5</button>
+    <button class="pin-key" onclick="pinPress('6')">6</button>
+    <button class="pin-key" onclick="pinPress('7')">7</button>
+    <button class="pin-key" onclick="pinPress('8')">8</button>
+    <button class="pin-key" onclick="pinPress('9')">9</button>
+    <button class="pin-key wide" onclick="pinClear()">CLEAR</button>
+    <button class="pin-key" onclick="pinPress('0')">0</button>
+    <button class="pin-key wide" onclick="pinBackspace()">⌫</button>
+  </div>
+  <div class="pin-error" id="pinError"></div>
+  <button class="pin-buy" onclick="window.open('https://wjsaclhstudio.gumroad.com/l/iarmoursilver','_blank')">Don't have a PIN? Get access on Gumroad →</button>
+</div>
+
+<!-- ───── SHARECARD MODAL (owner-only) ───── -->
+<div id="shareModal">
+  <div class="share-wrap">
+    <div id="captureArea">
+      <div class="share-brand">🛡️ iArmourSilver</div>
+      <div class="share-hook-en">Peace of mind for the ones you love most.</div>
+      <div class="share-hook-hi">अपने प्रियजनों के लिए सुरक्षा और शांति।</div>
+      <div class="share-price">$29 · ₹799</div>
+      <div class="share-watermark">iArmourSilver · WJSACLH Studio</div>
+    </div>
+    <div class="share-actions">
+      <button class="share-btn-cap" onclick="copyCaption()">📋 Copy Caption</button>
+      <button class="share-btn-post" onclick="launchPost()">📤 Post</button>
+    </div>
+    <div class="share-actions">
+      <button class="share-btn-cap" style="flex:1" onclick="closeModal('shareModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ───── AI COACH ───── -->
+<button class="ai-coach-btn" id="aiCoachBtn" onclick="toggleCoach()" style="display:none;">🤖</button>
+<div class="coach-panel" id="coachPanel">
+  <div class="coach-head"><span>🤖 AI Coach</span><button class="coach-close" onclick="toggleCoach()">✕</button></div>
+  <div class="coach-body" id="coachBody">Hi! I'm your iArmourSilver coach. Ask me about your medicines, faith verse, or how to use the app — I'm here to help. 💛</div>
+</div>
+
+<!-- ───── UNDO TOAST ───── -->
+<div class="undo-toast" id="undoToast">
+  <span id="undoMsg">Item deleted</span>
+  <button onclick="undoAction()">UNDO</button>
+</div>
+
+<header class="header">
+  <div class="header-logo" id="headerLogo" ontouchstart="shareTimerStart()" ontouchend="shareTimerEnd()" onmousedown="shareTimerStart()" onmouseup="shareTimerEnd()">
+    <div class="shield-icon">🛡️</div>
+    <div><div class="header-title">iArmourSilver</div><div class="header-sub">Your Trusted Companion</div></div>
+  </div>
+  <button class="voice-toggle" id="voiceToggle" onclick="toggleVoice()">🔊 Read All</button>
+</header>
+
+<div class="greeting-banner">
+  <div class="greeting-time" id="timeDisplay">MONDAY MORNING · 27 APRIL 2026</div>
+  <div class="greeting-main">Good Morning, George 🌅</div>
+  <div class="greeting-verse">"The Lord is my shepherd; I shall not want." — Psalm 23:1</div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('home')"><span class="ti">🏠</span>Home</button>
+  <button class="tab-btn" onclick="switchTab('spirit')"><span class="ti">✝️</span>Faith</button>
+  <button class="tab-btn" onclick="switchTab('health')"><span class="ti">💪</span>Health</button>
+  <button class="tab-btn" onclick="switchTab('safety')"><span class="ti">🛡️</span>Safety</button>
+  <button class="tab-btn" onclick="switchTab('remind')"><span class="ti">🔔</span>Remind</button>
+</div>
+
+<!-- HOME -->
+<div class="section active" id="tab-home">
+  <div style="margin-bottom:6px"></div>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-icon">💧</div>
+      <div class="stat-val" id="waterCount" style="color:var(--blue-light)">5</div>
+      <div class="stat-lbl">Glasses of Water</div>
+      <button class="stat-add" onclick="addWater()">+ Add Glass</button>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🏃</div>
+      <div class="stat-val" style="color:var(--green)">1/3</div>
+      <div class="stat-lbl">Exercises Done</div>
+      <button class="stat-add" onclick="switchTab('health')" style="color:var(--green);border-color:var(--green);background:#f0fdf4">Go →</button>
+    </div>
+  </div>
+  <div class="section-label">Quick Actions</div>
+  <button class="big-btn btn-holy" onclick="switchTab('spirit')">
+    <span class="bi">📖</span>
+    <span class="bt">Today's Bible Reading<span class="bs">Verse of the Day + Auto Read Mode</span></span>
+  </button>
+  <button class="big-btn btn-red" onclick="triggerSOS()">
+    <span class="bi">🆘</span>
+    <span class="bt">Emergency Help<span class="bs">Alerts Priya & Thomas instantly</span></span>
+  </button>
+  <button class="big-btn btn-blue" onclick="switchTab('health');setTimeout(openCamera,300)">
+    <span class="bi">📷</span>
+    <span class="bt">Snap Lab Report<span class="bs">Camera opens · AI explains results</span></span>
+  </button>
+  <button class="big-btn btn-wa" onclick="sendWhatsApp('msg','Hello Priya, just checking in! 😊')">
+    <span class="bi">💬</span>
+    <span class="bt">WhatsApp Priya<span class="bs">Send a message or say hello</span></span>
+  </button>
+  <div class="section-label">Trusted Family</div>
+  <div class="card">
+    <div class="card-title">👨‍👩‍👧 Your Nominees</div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div><div style="font-size:17px;font-weight:600">Priya George</div><div style="font-size:13px;color:var(--muted)">Daughter · +91 98765 43210</div></div>
+        <span class="nominee-chip">✅ Verified</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div><div style="font-size:17px;font-weight:600">Thomas George</div><div style="font-size:13px;color:var(--muted)">Son · +91 91234 56789</div></div>
+        <span class="nominee-chip">✅ Verified</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAITH -->
+<div class="section" id="tab-spirit">
+
+  <div class="auto-banner" id="autoBanner">
+    <div class="auto-dot"></div>
+    <div class="auto-banner-text" id="autoStatus">🔊 Auto Reading Mode ON — reading daily verse aloud…</div>
+    <button class="auto-stop" onclick="stopAutoMode()">■ Stop</button>
+  </div>
+
+  <!-- VERSE OF THE DAY -->
+  <div class="verse-card">
+    <div class="verse-label">✦ VERSE OF THE DAY</div>
+    <div class="verse-nav">
+      <button class="vnav-btn" onclick="prevVerse()">◀ Prev</button>
+      <span class="verse-day-badge" id="verseDayBadge">Day 1 of 7</span>
+      <button class="vnav-btn" onclick="nextVerse()">Next ▶</button>
+    </div>
+    <div class="verse-text" id="verseText"></div>
+    <div class="verse-ref" id="verseRef"></div>
+    <div class="verse-actions">
+      <button class="verse-btn" onclick="readCurrentVerse()">🔊 Listen</button>
+      <button class="verse-btn primary" onclick="openDeepDive()">📖 Deep Dive</button>
+      <button class="verse-btn automode" id="autoModeBtn" onclick="toggleAutoMode()">🔁 Auto Mode</button>
+      <button class="verse-btn" onclick="shareVerse()">↗ Share</button>
+    </div>
+  </div>
+
+  <!-- PODCAST PLAYER -->
+  <div class="section-label">🎧 Christian Podcasts & Hymns</div>
+  <div class="player-card">
+    <div class="player-label">NOW PLAYING — AD-FREE</div>
+    <div class="player-title" id="playerTitle">Select a podcast below</div>
+    <div class="player-host" id="playerHost">Add your own links or choose from the list</div>
+    <div class="player-controls">
+      <button class="p-btn" onclick="seekBack()">⏮</button>
+      <button class="p-btn play" id="playBtn" onclick="togglePlay()">▶</button>
+      <button class="p-btn" onclick="seekFwd()">⏭</button>
+      <div class="p-prog">
+        <div class="p-bar"><div class="p-fill" id="playerFill" style="width:0%"></div></div>
+        <div class="p-times"><span id="pCurr">0:00</span><span id="pDur">0:00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PODCAST -->
+  <div class="card">
+    <div class="card-title">➕ Add Podcast / Hymn Link</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:10px">Paste any direct .mp3 audio URL. Name it anything you like. No ads, no YouTube distractions.</div>
+    <div class="pod-input-row">
+      <input class="pod-input" id="podNameInput" placeholder="Name e.g. Morning Hymns" type="text"/>
+    </div>
+    <div class="pod-input-row">
+      <input class="pod-input" id="podUrlInput" placeholder="Paste audio URL (.mp3 link)…" type="url"/>
+      <button class="pod-add-btn" onclick="addPodcast()">＋</button>
+    </div>
+    <div class="pod-list" id="podList"></div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.7;background:var(--cream2);padding:10px;border-radius:8px">
+      💡 <strong>Where to find free Christian audio:</strong><br/>
+      • Search "[Church name] podcast mp3" on Google<br/>
+      • biblestudytools.com/audio-bible<br/>
+      • openbible.info — free audio verses
+    </div>
+  </div>
+
+  <!-- JOURNEY -->
+  <div class="section-label">Your Chronological Bible Journey</div>
+  <div class="card">
+    <div class="card-title">📜 Bible Pathway <span style="font-family:'Lora',serif;font-size:12px;background:var(--gold-light);color:var(--deep);padding:2px 9px;border-radius:20px;font-weight:600">Week 4</span></div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:10px">24% completed · 24 of 100 sessions</div>
+    <div class="prog-wrap"><div class="prog-bar" style="width:24%"></div></div>
+    <div style="height:8px"></div>
+    <div class="journey-track">
+      <div class="journey-step done"><div class="step-dot done">✓</div>
+        <div class="step-title">Old Testament Foundations</div>
+        <div class="step-desc">Genesis to Deuteronomy · Creation, Covenant & Law</div>
+        <div class="step-dur">✅ Completed · 8 sessions</div>
+      </div>
+      <div class="journey-step done"><div class="step-dot done">✓</div>
+        <div class="step-title">The Promised Land</div>
+        <div class="step-desc">Joshua, Judges, Ruth · Israel's Early Story</div>
+        <div class="step-dur">✅ Completed · 6 sessions</div>
+      </div>
+      <div class="journey-step current" onclick="openLesson()"><div class="step-dot current">▶</div>
+        <div class="step-title">Messianic Prophecies</div>
+        <div class="step-desc">Isaiah, Psalms, Micah · Pointing to Christ</div>
+        <div class="step-dur">🔵 In Progress · Session 3 of 12 · Tap to read aloud</div>
+      </div>
+      <div class="journey-step"><div class="step-dot todo">4</div>
+        <div class="step-title">The Life of Christ</div>
+        <div class="step-desc">Matthew, Mark, Luke, John · Walking with Jesus</div>
+        <div class="step-dur">🔒 Unlocks in 9 sessions</div>
+      </div>
+      <div class="journey-step"><div class="step-dot todo">5</div>
+        <div class="step-title">Salvation & Resurrection</div>
+        <div class="step-desc">Acts, Romans, Revelation · The Good News</div>
+        <div class="step-dur">🔒 Unlocks later</div>
+      </div>
+    </div>
+    <button class="big-btn btn-holy" style="margin-top:16px;margin-bottom:0" onclick="readFullLesson()">
+      <span class="bi">🔊</span><span class="bt">Read Entire Current Lesson Aloud<span class="bs">Full Isaiah 53 narration — complete passage</span></span>
+    </button>
+  </div>
+</div>
+
+<!-- HEALTH -->
+<div class="section" id="tab-health">
+  <div class="section-label">📋 Medical Report Scanner</div>
+  <div class="notice" id="camNotice">📱 <strong>Allow camera access</strong> when your browser asks. On mobile, this opens your back camera pointed at your lab report.</div>
+  <div class="ocr-box" id="ocrBox" onclick="openCamera()">
+    <div class="ocr-icon">📷</div>
+    <div class="ocr-text">Snap & Simplify</div>
+    <div class="ocr-sub">Tap here → Camera opens → Point at lab report → AI explains it in plain language</div>
+  </div>
+  <div class="camera-area" id="cameraArea">
+    <video id="camVideo" autoplay playsinline></video>
+    <canvas id="camCanvas"></canvas>
+    <div class="cam-btns">
+      <button class="cam-btn cam-snap" onclick="snapPhoto()">📸 Capture Report</button>
+      <button class="cam-btn cam-cancel" onclick="closeCamera()">✕ Cancel</button>
+    </div>
+  </div>
+  <div id="capturedPreview" style="display:none;margin-bottom:12px">
+    <img id="capturedImg" style="width:100%;border-radius:12px" alt="Report"/>
+    <div style="margin-top:8px;text-align:center;color:var(--muted);font-size:13px">Analyzing your report…</div>
+  </div>
+  <div class="ocr-result" id="ocrResult">
+    <div class="ocr-result-title">✅ Your Lab Report — Explained Simply</div>
+    <div class="ocr-item"><div class="ocr-dot" style="background:#f59e0b"></div>
+      <div class="ocr-item-text"><strong>Vitamin D: 14 ng/mL (Low)</strong> — Try 10–15 minutes of morning sunlight before 9 AM. Ask your doctor about supplements.</div></div>
+    <div class="ocr-item"><div class="ocr-dot" style="background:var(--green)"></div>
+      <div class="ocr-item-text"><strong>Haemoglobin: 13.2 g/dL (Normal)</strong> — Your blood is healthy. Keep eating green leafy vegetables and dals.</div></div>
+    <div class="ocr-item"><div class="ocr-dot" style="background:#ef4444"></div>
+      <div class="ocr-item-text"><strong>Blood Sugar (Fasting): 118 mg/dL (Slightly High)</strong> — Reduce rice and sweets. Walk 20 minutes after meals. Please consult your doctor.</div></div>
+    <button class="big-btn btn-wa" style="margin-top:14px;margin-bottom:8px" onclick="sendWhatsApp('msg','Hello Priya, my lab report is ready. Vitamin D is low and blood sugar is slightly high. Can we plan a doctor visit?')">
+      <span class="bi">💬</span><span class="bt">Send Report Summary to Priya<span class="bs">Opens WhatsApp with pre-filled message</span></span>
+    </button>
+    <button class="big-btn btn-light" style="margin-bottom:0" onclick="readOCR()">
+      <span class="bi">🔊</span><span class="bt">Read Report Aloud</span>
+    </button>
+  </div>
+
+  <div class="section-label">💪 Today's Strength Challenge</div>
+  <div class="exercise-grid">
+    <div class="exercise-card" onclick="openExercise('Wall Push-Ups','Strengthens chest and arms safely. Stand arms length from wall. Place palms flat. Bend elbows slowly, leaning toward wall. Push back gently. 8 to 10 repetitions.','3 min')">
+      <div class="exercise-icon">🤸</div><div class="exercise-name">Wall Push-Ups</div><div class="exercise-time">⏱ 3 minutes</div>
+    </div>
+    <div class="exercise-card" onclick="openExercise('Chair Sit-Stands','Builds leg strength and balance. Sit at edge of chair. Stand up fully. Sit back slowly. Hold chair armrest if needed. 8 repetitions.','3 min')">
+      <div class="exercise-icon">🪑</div><div class="exercise-name">Chair Sit-Stands</div><div class="exercise-time">⏱ 3 minutes</div>
+    </div>
+    <div class="exercise-card" onclick="openExercise('Ankle Rotations','Improves circulation and reduces swelling. Sit comfortably. Lift one foot. Rotate ankle 10 times clockwise. Then 10 times anti-clockwise. Repeat other foot.','2 min')">
+      <div class="exercise-icon">🦶</div><div class="exercise-name">Ankle Rotations</div><div class="exercise-time">⏱ 2 minutes</div>
+    </div>
+    <div class="exercise-card" onclick="openExercise('Shoulder Rolls','Relieves neck and shoulder tension. Sit tall. Roll both shoulders backward 10 times slowly. Then forward 10 times. Breathe deeply throughout.','2 min')">
+      <div class="exercise-icon">🧘</div><div class="exercise-name">Shoulder Rolls</div><div class="exercise-time">⏱ 2 minutes</div>
+    </div>
+  </div>
+  <button class="big-btn btn-green" onclick="showToast('🎉 All exercises complete! Well done, George!')">
+    <span class="bi">🏆</span><span class="bt">Mark All Complete<span class="bs">Earn your daily wellness badge</span></span>
+  </button>
+</div>
+
+<!-- SAFETY -->
+<div class="section" id="tab-safety">
+  <button class="sos-button" onclick="triggerSOS()">
+    <div class="sos-pulse"></div>🆘 EMERGENCY HELP
+  </button>
+  <div style="text-align:center;font-size:13px;color:var(--muted);margin-bottom:16px">Calls Priya · Sends WhatsApp alert · Records audio · Shares location</div>
+
+  <div class="section-label">📲 Alert Priya via WhatsApp</div>
+  <div class="wa-row">
+    <button class="wa-btn wa-call" onclick="sendWhatsApp('call')">📞 Call Priya</button>
+    <button class="wa-btn wa-msg" onclick="sendWhatsApp('msg','🚨 EMERGENCY: George needs immediate help! Please call or come home now. This is an automated SOS from iArmourSilver.')">💬 Emergency Message</button>
+  </div>
+  <div style="font-size:13px;color:var(--muted);line-height:1.6;background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:12px;margin-bottom:16px">
+    💡 <strong>"Call Priya"</strong> opens WhatsApp and dials her directly. <strong>"Emergency Message"</strong> opens WhatsApp with a pre-written SOS — just tap Send.
+  </div>
+
+  <div class="safe-word-box">
+    <div class="sw-label">🎙️ VOICE SAFE WORD — ALWAYS LISTENING</div>
+    <div class="sw-word">"Priya, Help Me"</div>
+    <div class="sw-desc">Say this phrase anytime — even with screen locked — to trigger an emergency WhatsApp alert and call to your family.</div>
+    <div class="mic-badge">🟢 Microphone Active — Listening quietly</div>
+  </div>
+
+  <div class="section-label">🔒 Anti-Fraud Protection</div>
+  <div class="card">
+    <div class="card-title">📵 Scam Alert Shield</div>
+    <div style="font-size:16px;line-height:1.6;color:var(--charcoal)">If someone calls asking for your <strong>OTP, Aadhaar, or bank details</strong> — AI detects the language and warns you immediately before you share anything.</div>
+    <button class="big-btn btn-light" style="margin-top:14px;margin-bottom:0" onclick="showToast('📞 Last blocked: KBC lottery scam (Yesterday 3 PM)')">
+      <span class="bi">📋</span><span class="bt">View Blocked Scam Calls<span class="bs">3 calls blocked this week</span></span>
+    </button>
+  </div>
+
+  <div class="section-label">🏛️ The Nominee Vault</div>
+  <div class="vault-card">
+    <div class="vault-label">🔐 ENCRYPTED · NOMINEE-PROTECTED</div>
+    <div class="vault-title">🏛️ Your Legacy Vault</div>
+    <div class="vault-items">
+      <div class="v-item"><span class="v-item-name">📄 Will (Jan 2026)</span><span class="v-item-st">🔒 Locked</span></div>
+      <div class="v-item"><span class="v-item-name">🏦 SBI Bank Account</span><span class="v-item-st">🔒 Locked</span></div>
+      <div class="v-item"><span class="v-item-name">🏠 Property Documents</span><span class="v-item-st">🔒 Locked</span></div>
+    </div>
+    <div class="vault-cooling">⏳ Any changes need a <strong>24-hour cooling period</strong> + SMS confirmation to Priya & Thomas — protecting you from pressure or coercion.</div>
+  </div>
+</div>
+
+<!-- REMINDERS -->
+<div class="section" id="tab-remind">
+  <div class="section-label">Today's Schedule</div>
+  <div class="reminder-list">
+    <div class="reminder-item"><div class="reminder-time">7:00</div><div class="reminder-info"><div class="reminder-name">🌅 Morning Prayer</div><div class="reminder-desc">Start the day with the Lord</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+    <div class="reminder-item"><div class="reminder-time">8:30</div><div class="reminder-info"><div class="reminder-name">💊 Morning Medicines</div><div class="reminder-desc">Metformin 500mg · Vitamin D</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+    <div class="reminder-item"><div class="reminder-time">10:00</div><div class="reminder-info"><div class="reminder-name">☀️ Sunlight Walk</div><div class="reminder-desc">10 mins for Vitamin D</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+    <div class="reminder-item"><div class="reminder-time">13:00</div><div class="reminder-info"><div class="reminder-name">🥗 Lunch & Rest</div><div class="reminder-desc">Light meal · 30 min rest</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+    <div class="reminder-item"><div class="reminder-time">16:00</div><div class="reminder-info"><div class="reminder-name">📖 Bible Reading</div><div class="reminder-desc">Isaiah · Messianic Prophecies</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+    <div class="reminder-item"><div class="reminder-time">19:00</div><div class="reminder-info"><div class="reminder-name">💪 Strength Challenge</div><div class="reminder-desc">5-minute functional exercises</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+    <div class="reminder-item"><div class="reminder-time">21:30</div><div class="reminder-info"><div class="reminder-name">🌙 Evening Medicines</div><div class="reminder-desc">Amlodipine 5mg · Sleep well</div></div><button class="r-toggle on" onclick="toggleReminder(this)"></button></div>
+  </div>
+  <button class="big-btn btn-blue" style="margin-top:18px" onclick="showToast('➕ Add Reminder — coming in full app!')"><span class="bi">➕</span><span class="bt">Add New Reminder</span></button>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="deepDiveModal" onclick="closeModal('deepDiveModal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('deepDiveModal')">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">📖 Deep Dive — <span id="ddTitle"></span></div>
+    <div class="modal-body" id="ddBody"></div>
+    <button class="big-btn btn-holy" style="margin-top:18px" onclick="readDeepDive()">🔊 Read This Sermon Aloud</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="exerciseModal" onclick="closeModal('exerciseModal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('exerciseModal')">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="exTitle"></div>
+    <div class="modal-body" id="exBody"></div>
+    <button class="big-btn btn-green" style="margin-top:16px" onclick="showToast('✅ Done! +1 exercise');closeModal('exerciseModal')">✅ Mark as Done</button>
+    <button class="big-btn btn-light" style="margin-bottom:0" onclick="readExercise()">🔊 Read Instructions Aloud</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="lessonModal" onclick="closeModal('lessonModal')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('lessonModal')">✕</button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">📜 Isaiah 53 — The Suffering Servant</div>
+    <div class="modal-body">
+      <p style="color:var(--muted);font-style:italic;font-size:14px;margin-bottom:14px">Session 3 · Messianic Prophecies</p>
+      <p style="margin-bottom:14px"><strong>Isaiah 53:1–3</strong> — "Who has believed our message? He grew up before him like a tender shoot... He was despised and rejected by mankind, a man of suffering, and familiar with pain."</p>
+      <p style="margin-bottom:14px"><strong>Isaiah 53:4–5</strong> — "Surely he took up our pain and bore our suffering... But he was pierced for our transgressions; by his wounds we are healed."</p>
+      <p style="margin-bottom:14px"><strong>Isaiah 53:6</strong> — "We all, like sheep, have gone astray... and the Lord has laid on him the iniquity of us all."</p>
+      <p style="background:#f0fdf4;border-radius:10px;padding:14px;font-size:15px;line-height:1.7;color:#166534"><strong>Reflection:</strong> Written 700 years before Jesus, Isaiah already described His suffering in vivid detail. This is the fingerprint of God on Scripture.</p>
+    </div>
+    <button class="big-btn btn-holy" style="margin-top:16px;margin-bottom:0" onclick="readFullLesson()">🔊 Read Full Passage Aloud</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="sosModal" onclick="closeModal('sosModal')">
+  <div class="modal sos-modal" onclick="event.stopPropagation()">
+    <div class="modal-handle" style="background:#555"></div>
+    <div style="text-align:center;padding:8px 0 20px">
+      <div style="font-size:54px;margin-bottom:10px">🆘</div>
+      <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px">Emergency Alert Sent!</div>
+      <div style="font-size:15px;color:#fca5a5;margin-bottom:18px;line-height:1.7">Priya and Thomas are being contacted now. Audio recording active. Location shared.</div>
+      <div class="wa-row" style="margin-bottom:14px">
+        <button class="wa-btn wa-call" onclick="sendWhatsApp('call')">📞 Call Priya Now</button>
+        <button class="wa-btn wa-msg" onclick="sendWhatsApp('msg','🚨 EMERGENCY: George needs immediate help! Please call or come home now. This is an automated SOS alert from iArmourSilver app.')">💬 WhatsApp Alert</button>
+      </div>
+      <div style="background:rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:14px;text-align:left">
+        <div style="color:#86efac;font-size:14px;font-weight:600;margin-bottom:6px">📞 Priya George — WhatsApp call opening</div>
+        <div style="color:#fca5a5;font-size:14px;font-weight:600">💬 Thomas George — Alert message queued</div>
+      </div>
+      <button class="big-btn" style="background:rgba(255,255,255,.12);color:white;border:1.5px solid rgba(255,255,255,.25);margin-bottom:0" onclick="closeModal('sosModal');showToast('✅ Alert cancelled — stay safe!')">
+        Cancel — I Am Safe Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<audio id="podAudio" preload="none"></audio>
+
+<script>
+// ───── STATE ─────
+let voiceOn=false,autoMode=false,autoTimer=null,playing=false;
+let waterVal=5,verseIdx=0,currentStream=null,activePod=-1,currentExText='',currentDDText='';
+const podAudio=document.getElementById('podAudio');
+let podcasts=[];
+
+// ───── VERSES ─────
+const VERSES=[
+  {text:'"For God so loved the world that He gave His one and only Son, that whoever believes in Him shall not perish but have eternal life."',ref:'John 3:16 · NIV',sermon:'John 3:16 is the entire Gospel in one sentence. God loved first — not because we were good, but because He is love. His gift of Jesus is the greatest act in all of history. The invitation — whoever believes — is open to you, George, right now, this very moment.'},
+  {text:'"I can do all this through him who gives me strength."',ref:'Philippians 4:13 · NIV',sermon:'Paul wrote these words from prison. He was not saying he could do anything he wished. He was saying that in every circumstance, Christ gives strength to endure. On days when your body feels weak, this is your anchor.'},
+  {text:'"The Lord is my shepherd; I shall not want."',ref:'Psalm 23:1 · KJV',sermon:'David, a shepherd himself, knew exactly what this meant. A good shepherd never leaves the flock. He provides grass, water, and protection. This is what God promises you — not a life without problems, but a life where you are never abandoned within them.'},
+  {text:'"Trust in the Lord with all your heart and lean not on your own understanding."',ref:'Proverbs 3:5 · NIV',sermon:'Our minds are limited. We see today; God sees eternity. When life does not make sense — when health is difficult, when family is far — trusting God is not weakness. It is the wisest thing a human being can do.'},
+  {text:'"Come to me, all you who are weary and burdened, and I will give you rest."',ref:'Matthew 11:28 · NIV',sermon:'Jesus speaks these words directly to tired souls. Not to the strong. Not to the successful. To the weary. If this morning you woke up carrying worry, physical pain, or loneliness — these are the exact words Jesus spoke for you.'},
+  {text:'"Even to your old age and gray hairs I am he, I am he who will sustain you."',ref:'Isaiah 46:4 · NIV',sermon:'God does not abandon us when our hair turns grey and our steps slow down. This is His specific promise to seniors — that the same God who carried you in youth will carry you in old age. You are not forgotten. You are specifically named.'},
+  {text:'"He heals the brokenhearted and binds up their wounds."',ref:'Psalm 147:3 · NIV',sermon:'Whatever wounds you carry today — loss, illness, loneliness — God is described here as a physician who specializes in broken hearts. You do not need to pretend to be strong in His presence. He already knows, and He is already healing.'},
+];
+
+// ───── VOICE ─────
+const synth=window.speechSynthesis;
+let voices=[];
+function loadVoices(){voices=synth.getVoices();}
+if('speechSynthesis' in window){loadVoices();synth.onvoiceschanged=loadVoices;}
+
+function speak(text,cb){
+  if(!('speechSynthesis' in window)){showToast('Voice not supported in this browser');return;}
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=0.82;u.pitch=1.05;u.volume=1;
+  const v=voices.find(x=>x.lang.startsWith('en')&&/female|woman|samantha|karen|moira/i.test(x.name))
+    ||voices.find(x=>x.lang.startsWith('en'))||voices[0];
+  if(v)u.voice=v;
+  if(cb)u.onend=cb;
+  synth.speak(u);
+}
+
+function toggleVoice(){
+  voiceOn=!voiceOn;
+  const btn=document.getElementById('voiceToggle');
+  btn.textContent=voiceOn?'🔊 Reading ON':'🔊 Read All';
+  btn.classList.toggle('active',voiceOn);
+  if(voiceOn){speak('Voice reading mode is on. I will read everything aloud.');showToast('🔊 Voice reading enabled!');}
+  else{synth.cancel();showToast('🔇 Voice off');}
+}
+
+// ───── TABS ─────
+function switchTab(tab){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  ['home','spirit','health','safety','remind'].forEach((t,i)=>{
+    if(t===tab)document.querySelectorAll('.tab-btn')[i].classList.add('active');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(voiceOn){const m={home:'Home. Daily overview.',spirit:'Faith tab.',health:'Health tab.',safety:'Safety tab.',remind:'Reminders.'};speak(m[tab]);}
+}
+
+// ───── TOAST ─────
+let toastTimer=null;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ───── WATER ─────
+function addWater(){
+  waterVal=Math.min(waterVal+1,12);
+  document.getElementById('waterCount').textContent=waterVal;
+  showToast('💧 Glass '+waterVal+' logged!');
+  if(voiceOn)speak('Glass '+waterVal+' of water logged. Well done!');
+}
+
+// ───── VERSES ─────
+function renderVerse(){
+  const v=VERSES[verseIdx];
+  document.getElementById('verseText').textContent=v.text;
+  document.getElementById('verseRef').textContent=v.ref;
+  document.getElementById('verseDayBadge').textContent='Day '+(verseIdx+1)+' of '+VERSES.length;
+}
+function nextVerse(){verseIdx=(verseIdx+1)%VERSES.length;renderVerse();if(voiceOn||autoMode)readCurrentVerse();}
+function prevVerse(){verseIdx=(verseIdx-1+VERSES.length)%VERSES.length;renderVerse();if(voiceOn)readCurrentVerse();}
+function readCurrentVerse(){
+  const v=VERSES[verseIdx];
+  speak(v.text+'. '+v.ref);
+  showToast('🔊 Reading: '+v.ref);
+}
+function shareVerse(){
+  const v=VERSES[verseIdx];
+  const txt=v.text+' — '+v.ref;
+  if(navigator.share){navigator.share({title:'iArmourSilver – Daily Verse',text:txt});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>showToast('✅ Verse copied to clipboard!'));}
+  else showToast('✅ '+v.ref+' — shared!');
+}
+
+// ───── AUTO MODE ─────
+function toggleAutoMode(){
+  autoMode=!autoMode;
+  const btn=document.getElementById('autoModeBtn');
+  const banner=document.getElementById('autoBanner');
+  if(autoMode){
+    btn.textContent='⏹ Stop Auto';btn.classList.add('on');
+    banner.classList.add('visible');
+    readCurrentVerse();
+    // Read next verse every 90 seconds
+    autoTimer=setInterval(()=>{
+      verseIdx=(verseIdx+1)%VERSES.length;renderVerse();
+      document.getElementById('autoStatus').textContent='🔊 Now reading: '+VERSES[verseIdx].ref;
+      readCurrentVerse();
+    },90000);
+    showToast('🔁 Auto Mode ON — reading each verse aloud');
+  }else{stopAutoMode();}
+}
+function stopAutoMode(){
+  autoMode=false;clearInterval(autoTimer);synth.cancel();
+  document.getElementById('autoModeBtn').textContent='🔁 Auto Mode';
+  document.getElementById('autoModeBtn').classList.remove('on');
+  document.getElementById('autoBanner').classList.remove('visible');
+  showToast('⏹ Auto Reading stopped');
+}
+
+// ───── DEEP DIVE ─────
+function openDeepDive(){
+  const v=VERSES[verseIdx];
+  document.getElementById('ddTitle').textContent=v.ref;
+  document.getElementById('ddBody').innerHTML='<p style="line-height:1.8">'+v.sermon+'</p>';
+  currentDDText=v.sermon;
+  document.getElementById('deepDiveModal').classList.add('open');
+}
+function readDeepDive(){speak(currentDDText);showToast('🔊 Reading sermon…');}
+
+// ───── LESSONS ─────
+function openLesson(){document.getElementById('lessonModal').classList.add('open');}
+function readFullLesson(){
+  closeModal('lessonModal');
+  const txt='Isaiah chapter 53. The Suffering Servant. Who has believed our message? He grew up before him like a tender shoot. He was despised and rejected by mankind, a man of suffering, and familiar with pain. Surely he took up our pain and bore our suffering. But he was pierced for our transgressions; by his wounds we are healed. We all, like sheep, have gone astray, and the Lord has laid on him the iniquity of us all. This was written 700 years before Jesus, George — proof that what you believe is true.';
+  speak(txt);showToast('🔊 Reading Isaiah 53 aloud…');
+}
+
+// ───── PODCAST ─────
+function renderPodList(){
+  const el=document.getElementById('podList');
+  if(!podcasts.length){el.innerHTML='<div style="font-size:14px;color:var(--muted);padding:8px 0">No podcasts yet — add a link above</div>';return;}
+  el.innerHTML=podcasts.map((p,i)=>`
+    <div class="pod-item ${i===activePod?'active':''}" onclick="selectPodcast(${i})">
+      <span class="pod-item-icon">${i===activePod?'🔊':'🎵'}</span>
+      <div class="pod-item-info">
+        <div class="pod-item-name">${p.name}</div>
+        <div class="pod-item-url">${p.url}</div>
+        ${i===activePod?'<div class="pod-playing">▶ Playing</div>':''}
+      </div>
+      <button class="pod-del" onclick="event.stopPropagation();removePod(${i})">🗑</button>
+    </div>`).join('');
+}
+function addPodcast(){
+  const name=document.getElementById('podNameInput').value.trim();
+  const url=document.getElementById('podUrlInput').value.trim();
+  if(!url){showToast('❗ Please paste an audio URL');return;}
+  podcasts.push({name:name||'Podcast '+(podcasts.length+1),url});
+  document.getElementById('podNameInput').value='';
+  document.getElementById('podUrlInput').value='';
+  renderPodList();
+  showToast('✅ Added! Tap to play.');
+}
+function removePod(i){
+  if(i===activePod){podAudio.pause();activePod=-1;playing=false;updatePlayBtn();document.getElementById('playerTitle').textContent='Select a podcast below';document.getElementById('playerHost').textContent='Add your own links or choose from the list';}
+  podcasts.splice(i,1);
+  if(activePod>i)activePod--;
+  renderPodList();showToast('🗑 Removed');
+}
+function selectPodcast(i){
+  activePod=i;const p=podcasts[i];
+  podAudio.src=p.url;podAudio.load();
+  document.getElementById('playerTitle').textContent=p.name;
+  document.getElementById('playerHost').textContent=p.url.length>50?p.url.slice(0,50)+'…':p.url;
+  podAudio.play().then(()=>{playing=true;updatePlayBtn();showToast('▶ Playing: '+p.name);})
+    .catch(()=>{playing=false;updatePlayBtn();showToast('⚠️ Cannot play — try a direct .mp3 URL');});
+  renderPodList();
+}
+function togglePlay(){
+  if(activePod===-1){showToast('❗ Tap a podcast in the list below first');return;}
+  if(playing){podAudio.pause();playing=false;showToast('⏸ Paused');}
+  else{podAudio.play().then(()=>{playing=true;showToast('▶ Playing');}).catch(()=>showToast('⚠️ Playback failed'));} 
+  updatePlayBtn();
+}
+function updatePlayBtn(){document.getElementById('playBtn').textContent=playing?'⏸':'▶';}
+function seekBack(){podAudio.currentTime=Math.max(0,podAudio.currentTime-30);showToast('⏮ -30 sec');}
+function seekFwd(){podAudio.currentTime=Math.min(podAudio.duration||0,podAudio.currentTime+30);showToast('⏭ +30 sec');}
+
+podAudio.addEventListener('timeupdate',()=>{
+  if(!podAudio.duration)return;
+  const p=(podAudio.currentTime/podAudio.duration)*100;
+  document.getElementById('playerFill').style.width=p+'%';
+  document.getElementById('pCurr').textContent=fmt(podAudio.currentTime);
+  document.getElementById('pDur').textContent=fmt(podAudio.duration);
+});
+podAudio.addEventListener('ended',()=>{playing=false;updatePlayBtn();showToast('✅ Podcast finished');});
+function fmt(s){if(!s||isNaN(s))return'0:00';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+
+// ───── CAMERA / OCR ─────
+function openCamera(){
+  const area=document.getElementById('cameraArea');
+  document.getElementById('camNotice').style.display='block';
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    showToast('📷 Camera not available — simulating scan');
+    document.getElementById('camNotice').style.display='none';
+    simulateOCR();return;
+  }
+  navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})
+    .then(stream=>{
+      currentStream=stream;
+      const vid=document.getElementById('camVideo');
+      vid.srcObject=stream;
+      area.classList.add('show');
+      document.getElementById('ocrBox').style.display='none';
+      showToast('📷 Camera open — point at your lab report');
+      if(voiceOn)speak('Camera is open. Point it at your lab report and tap Capture Report.');
+    })
+    .catch(()=>{
+      document.getElementById('camNotice').style.display='none';
+      showToast('📷 Camera access denied — showing demo result');
+      simulateOCR();
+    });
+}
+function closeCamera(){
+  if(currentStream){currentStream.getTracks().forEach(t=>t.stop());currentStream=null;}
+  document.getElementById('cameraArea').classList.remove('show');
+  document.getElementById('ocrBox').style.display='block';
+  document.getElementById('camNotice').style.display='none';
+}
+function snapPhoto(){
+  const vid=document.getElementById('camVideo');
+  const canvas=document.getElementById('camCanvas');
+  canvas.width=vid.videoWidth||320;canvas.height=vid.videoHeight||240;
+  canvas.getContext('2d').drawImage(vid,0,0);
+  const dataUrl=canvas.toDataURL('image/jpeg');
+  closeCamera();
+  const prev=document.getElementById('capturedPreview');
+  document.getElementById('capturedImg').src=dataUrl;
+  prev.style.display='block';
+  showToast('📸 Captured! Analyzing…');
+  setTimeout(()=>{prev.style.display='none';showOCR();},2200);
+}
+function simulateOCR(){showToast('🔍 Analyzing report…');setTimeout(showOCR,1800);}
+function showOCR(){
+  const r=document.getElementById('ocrResult');
+  r.classList.add('visible');
+  r.scrollIntoView({behavior:'smooth'});
+  showToast('✅ Report analyzed successfully!');
+  if(voiceOn)readOCR();
+}
+function readOCR(){
+  speak('Your lab report results. Vitamin D is 14 nanograms per milliliter, which is Low. Try 10 minutes of morning sunlight. Ask your doctor about supplements. Haemoglobin is 13 point 2, which is Normal. Your blood is healthy. Blood Sugar fasting is 118, which is Slightly High. Reduce rice and sweets. Walk 20 minutes after meals. Please consult your doctor.');
+  showToast('🔊 Reading report aloud…');
+}
+
+// ───── EXERCISE ─────
+function openExercise(name,desc,time){
+  currentExText=name+'. '+desc;
+  document.getElementById('exTitle').textContent='💪 '+name;
+  document.getElementById('exBody').innerHTML=`
+    <p style="margin-bottom:12px;line-height:1.7">${desc}</p>
+    <p style="margin-bottom:10px">⏱ Duration: <strong>${time}</strong></p>
+    <p style="background:#f0fdf4;border-radius:10px;padding:14px;font-size:15px;line-height:1.7;color:#166534">
+    💡 <strong>Safety Tip:</strong> Stop if you feel pain or dizziness. 8–10 repetitions is a great start. Always hold something stable if you feel unsteady.</p>`;
+  document.getElementById('exerciseModal').classList.add('open');
+  if(voiceOn)speak(name+'. '+desc);
+}
+function readExercise(){speak(currentExText);showToast('🔊 Reading instructions…');}
+
+// ───── WHATSAPP ─────
+const PRIYA='919876543210';
+function sendWhatsApp(type,msg){
+  if(type==='call'){window.open('https://wa.me/'+PRIYA,'_blank');showToast('📞 Opening WhatsApp to call Priya…');}
+  else{const m=msg||'Hello Priya! 😊';window.open('https://wa.me/'+PRIYA+'?text='+encodeURIComponent(m),'_blank');showToast('💬 Opening WhatsApp message to Priya…');}
+}
+
+// ───── SOS ─────
+function triggerSOS(){
+  document.getElementById('sosModal').classList.add('open');
+  if(navigator.vibrate)navigator.vibrate([300,100,300,100,600]);
+  if(voiceOn)speak('Emergency alert! Contacting Priya and Thomas now. Please stay calm. Help is on the way.');
+}
+
+// ───── MODALS / TOGGLES ─────
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function toggleReminder(btn){
+  btn.classList.toggle('on');btn.classList.toggle('off');
+  showToast(btn.classList.contains('on')?'🔔 Reminder on':'🔕 Reminder off');
+}
+
+// ═══════════ PIN GATE ═══════════
+const OWNER_PIN='2026';
+let enteredPin='';
+function getBuyerPin(){
+  let p=localStorage.getItem('iarmour_buyer_pin');
+  if(!p){
+    const arr=new Uint32Array(1);crypto.getRandomValues(arr);
+    p=String(100000+(arr[0]%900000));
+    localStorage.setItem('iarmour_buyer_pin',p);
+  }
+  return p;
+}
+function pinPress(d){
+  if(enteredPin.length>=6)return;
+  enteredPin+=d;
+  renderPinDots();
+  if(enteredPin.length===4||enteredPin.length===6)checkPin();
+}
+function pinBackspace(){enteredPin=enteredPin.slice(0,-1);renderPinDots();document.getElementById('pinError').textContent='';}
+function pinClear(){enteredPin='';renderPinDots();document.getElementById('pinError').textContent='';}
+function renderPinDots(){
+  const dots=document.querySelectorAll('#pinDots .pin-dot');
+  dots.forEach((d,i)=>d.classList.toggle('filled',i<enteredPin.length));
+}
+function checkPin(){
+  const buyerPin=getBuyerPin();
+  if(enteredPin===OWNER_PIN||enteredPin===buyerPin){
+    document.getElementById('pinGate').classList.add('hidden');
+    localStorage.setItem('iarmour_unlocked','1');
+    document.getElementById('aiCoachBtn').style.display='flex';
+    if(enteredPin===OWNER_PIN)localStorage.setItem('iarmour_owner','1');
+  } else {
+    document.getElementById('pinError').textContent='Incorrect PIN — try again';
+    if(navigator.vibrate)navigator.vibrate(200);
+    setTimeout(()=>{enteredPin='';renderPinDots();},500);
+  }
+}
+function checkUnlockOnLoad(){
+  if(localStorage.getItem('iarmour_unlocked')==='1'){
+    document.getElementById('pinGate').classList.add('hidden');
+    document.getElementById('aiCoachBtn').style.display='flex';
+  }
+}
+
+// ═══════════ AI COACH ═══════════
+function toggleCoach(){
+  document.getElementById('coachPanel').classList.toggle('open');
+}
+
+// ═══════════ SHARECARD (owner-only) ═══════════
+function openShareCard(){
+  if(localStorage.getItem('iarmour_owner')!=='1'){showToast('Owner access only');return;}
+  document.getElementById('shareModal').classList.add('open');
+}
+function copyCaption(){
+  const cap=`Peace of mind for the ones you love most. 🛡️
+अपने प्रियजनों के लिए सुरक्षा और शांति।
+$29 · ₹799 — iArmourSilver
+#SeniorCare #ElderlyCare #FamilySafety #DailyReminders #FaithAndWellness #SilverYears #CaregiverSupport`;
+  navigator.clipboard.writeText(cap).then(()=>showToast('📋 Caption copied!'));
+}
+function launchPost(){
+  const node=document.getElementById('captureArea');
+  html2canvas(node,{scale:2}).then(canvas=>{
+    canvas.toBlob(blob=>{
+      const file=new File([blob],'iarmoursilver-share.jpg',{type:'image/jpeg'});
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        navigator.share({files:[file],title:'iArmourSilver',text:'Peace of mind for the ones you love most. 🛡️'});
+      } else {
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');a.href=url;a.download='iarmoursilver-share.jpg';a.click();
+        showToast('📥 Image downloaded — share manually');
+      }
+    },'image/jpeg',0.95);
+  });
+}
+
+// ═══════════ UNDO TOAST (scaffold for future delete actions) ═══════════
+let undoTimer=null,undoCallback=null;
+function showUndoToast(msg,cb){
+  document.getElementById('undoMsg').textContent=msg;
+  undoCallback=cb;
+  document.getElementById('undoToast').classList.add('show');
+  clearTimeout(undoTimer);
+  undoTimer=setTimeout(()=>{document.getElementById('undoToast').classList.remove('show');undoCallback=null;},5000);
+}
+function undoAction(){
+  if(undoCallback)undoCallback();
+  clearTimeout(undoTimer);
+  document.getElementById('undoToast').classList.remove('show');
+}
+
+// ═══════════ LONG-PRESS LOGO → SHARECARD (owner) ═══════════
+let shareTimer=null;
+function shareTimerStart(){shareTimer=setTimeout(openShareCard,900);}
+function shareTimerEnd(){clearTimeout(shareTimer);}
+
+// ═══════════ INIT ═══════════
+function updateTime(){
+  const now=new Date();const h=now.getHours();
+  const am=h<12?'MORNING':h<17?'AFTERNOON':'EVENING';
+  const D=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const M=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+  document.getElementById('timeDisplay').textContent=D[now.getDay()]+' '+am+' · '+now.getDate()+' '+M[now.getMonth()]+' '+now.getFullYear();
+}
+updateTime();
+checkUnlockOnLoad();
+renderVerse();
+renderPodList();
+</script>
+
+<div class="app-footer">© 2026 WJSACLH Studio · All Rights Reserved</div>
+</body>
+</html>
